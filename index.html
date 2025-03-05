@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecasting</title>
+    <link rel="icon" type="avif" href="weather.avif">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+</head>
+<body>
+ <nav class="nabar">
+    <div class="logo">Weather Forecasting</div>
+    <ul class="nav-links">
+        <li><a href="http://127.0.0.1:5500/login/index.html"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+          </svg></a></li>
+        <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+            <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/>
+          </svg></i></a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Wheather API</a></li>
+    </ul>
+    <div>
+        <button class="location-btn" onclick="getLocation()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+          </svg></button>
+    </div>
+ </nav>
+ <div id="particles-js"></div>
+
+    <div class="container">
+        <h1>Weather App</h1>
+
+        <div class="search-box">
+            <input type="text" id="city-input" placeholder="Enter city name">
+            <button onclick="getWeather()">Search</button>
+        </div>
+
+        <div class="weather-info">
+            <h2 id="location">City, Country</h2>
+            <p id="datetime">Date & Time</p>
+            <img id="weather-icon" class="weather-icon" src="http://openweathermap.org/img/wn/01d@2x.png" alt="Weather Icon">
+            <p class="temperature" id="temperature">--°C</p>
+            <button class="toggle-btn" onclick="toggleTemperature()">Toggle °C/°F</button>
+            <p id="description">Weather Description</p>
+        </div>
+
+        <div class="weather-details">
+            <p>Humidity: <span id="humidity">--%</span></p>
+            <p>Wind Speed: <span id="wind-speed">-- km/h</span></p>
+            <p>Pressure: <span id="pressure">-- hPa</span></p>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather API Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --code-bg: #282c34;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark);
+            color: white;
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header i {
+            font-size: 1.8rem;
+            margin-right: 0.8rem;
+            color: var(--primary);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 0.6rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--primary);
+        }
+
+        .sidebar-nav .nav-section {
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem 3rem;
+        }
+
+        /* API Documentation Sections */
+        .api-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .api-section h2 {
+            color: var(--primary);
+            margin-top: 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .api-section h3 {
+            color: var(--dark);
+            margin-top: 1.5rem;
+        }
+
+        .endpoint {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .method {
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-family: monospace;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .method.get {
+            background: #61affe;
+            color: #1a1a1a;
+        }
+
+        .method.post {
+            background: #49cc90;
+            color: #1a1a1a;
+        }
+
+        .url {
+            font-family: monospace;
+            background: rgba(0,0,0,0.05);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        pre {
+            margin: 0;
+        }
+
+        /* Response Example */
+        .response-example {
+            margin: 1.5rem 0;
+        }
+
+        .response-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 0;
+        }
+
+        .response-tab {
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 0.3rem;
+        }
+
+        .response-tab.active {
+            background: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .response-content {
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            padding: 1rem;
+        }
+
+        /* Interactive API Tester */
+        .api-tester {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tester-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .tester-results {
+            margin-top: 2rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .execute-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            grid-column: span 2;
+        }
+
+        .execute-btn:hover {
+            background: #2980b9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .tester-form {
+                grid-template-columns: 1fr;
+            }
+            .execute-btn {
+                grid-column: span 1;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .api-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-cloud-sun"></i>
+            <h1>Weather API</h1>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="nav-section">Introduction</li>
+            <li><a href="#overview" class="active">Overview</a></li>
+            <li><a href="#authentication">Authentication</a></li>
+            
+            <li class="nav-section">API Endpoints</li>
+            <li><a href="#current-weather">Current Weather</a></li>
+            <li><a href="#forecast">Forecast</a></li>
+            <li><a href="#historical">Historical Data</a></li>
+            <li><a href="#air-quality">Air Quality</a></li>
+            
+            <li class="nav-section">Code Examples</li>
+            <li><a href="#javascript">JavaScript</a></li>
+            <li><a href="#python">Python</a></li>
+            <li><a href="#curl">cURL</a></li>
+            
+            <li class="nav-section">Resources</li>
+            <li><a href="#errors">Error Codes</a></li>
+            <li><a href="#rate-limiting">Rate Limiting</a></li>
+            <li><a href="#support">Support</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Overview Section -->
+        <section id="overview" class="api-section">
+            <h2>Overview</h2>
+            <p>The Weather API provides developers with access to global weather data, including current conditions, forecasts, historical data, and air quality information. Our API delivers accurate, reliable weather data sourced from multiple meteorological providers and processed with proprietary algorithms.</p>
+            
+            <h3>Features</h3>
+            <ul>
+                <li>Real-time weather data for any location</li>
+                <li>5-day/3-hour forecasts with 99% accuracy</li>
+                <li>Historical weather data archive (10+ years)</li>
+                <li>Air quality index (AQI) measurements</li>
+                <li>Hyperlocal weather predictions</li>
+                <li>Severe weather alerts</li>
+            </ul>
+        </section>
+
+        <!-- Authentication Section -->
+        <section id="authentication" class="api-section">
+            <h2>Authentication</h2>
+            <p>All API requests require an API key for authentication. Include your API key in the request header:</p>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">https://api.weatherapp.com/v1/current?city={city}</span>
+                </div>
+                
+                <div class="code-block">
+                    <pre><code class="http">
+GET /v1/current?city=London HTTP/1.1
+Host: api.weatherapp.com
+Authorization: Bearer YOUR_API_KEY
+Accept: application/json
+                    </code></pre>
+                </div>
+                
+                <p>You can get your API key by signing up at <a href="#">developer.weatherapp.com</a>. Free tier includes 1,000 requests/day.</p>
+            </div>
+        </section>
+
+        <!-- Current Weather Endpoint -->
+        <section id="current-weather" class="api-section">
+            <h2>Current Weather</h2>
+            <p>Get current weather data for any location by city name, ZIP code, or geographic coordinates.</p>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">https://api.weatherapp.com/v1/current?city={city}&units={metric|imperial}</span>
+                </div>
+                
+                <h3>Parameters</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>city</td>
+                            <td>string</td>
+                            <td>Yes*</td>
+                            <td>City name (either city or lat/lon required)</td>
+                        </tr>
+                        <tr>
+                            <td>lat</td>
+                            <td>number</td>
+                            <td>Yes*</td>
+                            <td>Latitude (decimal)</td>
+                        </tr>
+                        <tr>
+                            <td>lon</td>
+                            <td>number</td>
+                            <td>Yes*</td>
+                            <td>Longitude (decimal)</td>
+                        </tr>
+                        <tr>
+                            <td>units</td>
+                            <td>string</td>
+                            <td>No</td>
+                            <td>Unit system (metric or imperial, default: metric)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Response Example</h3>
+                <div class="response-example">
+                    <div class="response-tabs">
+                        <div class="response-tab active">200 Success</div>
+                        <div class="response-tab">400 Error</div>
+                    </div>
+                    <div class="response-content">
+                        <div class="code-block">
+                            <pre><code class="json">
+{
+  "location": {
+    "city": "London",
+    "country": "GB",
+    "lat": 51.51,
+    "lon": -0.13,
+    "timezone": "Europe/London"
+  },
+  "weather": {
+    "timestamp": "2023-06-15T14:30:00Z",
+    "temp": 18.5,
+    "feels_like": 17.8,
+    "humidity": 65,
+    "pressure": 1012,
+    "wind_speed": 3.1,
+    "wind_deg": 210,
+    "conditions": "Cloudy",
+    "icon": "04d",
+    "visibility": 10000,
+    "clouds": 75
+  }
+}
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Forecast Endpoint -->
+        <section id="forecast" class="api-section">
+            <h2>Forecast</h2>
+            <p>Get weather forecast data with 3-hour intervals for 5 days.</p>
+            
+            <div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    <span class="url">https://api.weatherapp.com/v1/forecast?lat={lat}&lon={lon}&units={metric|imperial}</span>
+                </div>
+                
+                <h3>Response Example</h3>
+                <div class="code-block">
+                    <pre><code class="json">
+{
+  "location": {
+    "city": "New York",
+    "country": "US",
+    "lat": 40.71,
+    "lon": -74.01
+  },
+  "forecast": [
+    {
+      "timestamp": "2023-06-15T15:00:00Z",
+      "temp": 22.3,
+      "feels_like": 23.1,
+      "conditions": "Sunny",
+      "icon": "01d",
+      "pop": 0
+    },
+    {
+      "timestamp": "2023-06-15T18:00:00Z",
+      "temp": 20.7,
+      "feels_like": 21.2,
+      "conditions": "Partly Cloudy",
+      "icon": "02d",
+      "pop": 0.1
+    }
+    // ... more forecast entries
+  ]
+}
+                    </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive API Tester -->
+        <section class="api-tester">
+            <h2>API Tester</h2>
+            <p>Try out the API directly from this documentation:</p>
+            
+            <div class="tester-form">
+                <div class="form-group">
+                    <label for="endpoint">Endpoint</label>
+                    <select id="endpoint">
+                        <option value="/current">Current Weather</option>
+                        <option value="/forecast">5-Day Forecast</option>
+                        <option value="/airquality">Air Quality</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" placeholder="City name or lat,lon">
+                </div>
+                
+                <div class="form-group">
+                    <label for="units">Units</label>
+                    <select id="units">
+                        <option value="metric">Metric (°C, m/s)</option>
+                        <option value="imperial">Imperial (°F, mph)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="apikey">API Key</label>
+                    <input type="text" id="apikey" placeholder="Your API key">
+                </div>
+                
+                <button class="execute-btn" onclick="testApi()">
+                    <i class="fas fa-play"></i> Execute Request
+                </button>
+            </div>
+            
+            <div class="tester-results">
+                <h3>Response</h3>
+                <div class="code-block">
+                    <pre id="api-response"><code class="json">
+// Response will appear here after execution
+                    </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- More sections would follow... -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+        
+        // Tab functionality for response examples
+        document.querySelectorAll('.response-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabs = tab.parentElement.querySelectorAll('.response-tab');
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // In a real implementation, you'd switch the content here
+            });
+        });
+        
+        // API Tester function
+        function testApi() {
+            const endpoint = document.getElementById('endpoint').value;
+            const location = document.getElementById('location').value;
+            const units = document.getElementById('units').value;
+            const apikey = document.getElementById('apikey').value;
+            
+            // Display loading state
+            document.getElementById('api-response').innerHTML = '<code class="json">Loading response...</code>';
+            
+            // Simulate API call (in a real implementation, this would be a fetch request)
+            setTimeout(() => {
+                const mockResponse = {
+                    "status": "success",
+                    "request": {
+                        "endpoint": endpoint,
+                        "location": location,
+                        "units": units
+                    },
+                    "data": endpoint === "/current" ? {
+                        "location": {
+                            "city": location.split(',')[0] || "Sample City",
+                            "country": "US",
+                            "lat": 40.71,
+                            "lon": -74.01
+                        },
+                        "weather": {
+                            "temp": units === "metric" ? 22.5 : 72.5,
+                            "conditions": "Sunny",
+                            "humidity": 65
+                        }
+                    } : {
+                        "location": {
+                            "city": location.split(',')[0] || "Sample City",
+                            "country": "US"
+                        },
+                        "forecast": "5-day forecast data would appear here"
+                    }
+                };
+                
+                document.getElementById('api-response').innerHTML = '<code class="json">' + 
+                    JSON.stringify(mockResponse, null, 2) + '</code>';
+                hljs.highlightAll();
+            }, 800);
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active nav item
+                document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -111,3 +111,56 @@ particlesJS("particles-js", {
         }
     }
 });
+
+ // Enhanced Loading Sequence
+ document.addEventListener('DOMContentLoaded', function() {
+    const progressFill = document.getElementById('progress-fill');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const authContainer = document.getElementById('authContainer');
+    
+    // Simulate loading progress (replace with real progress events)
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 100) progress = 100;
+        progressFill.style.width = progress + '%';
+        
+        if (progress === 100) {
+            clearInterval(progressInterval);
+            setTimeout(initApp, 800);
+        }
+    }, 200);
+    
+    // Initialize app after loading
+    function initApp() {
+        loadingOverlay.style.opacity = '0';
+        document.body.classList.add('loaded');
+        
+        setTimeout(() => {
+            loadingOverlay.remove();
+            authContainer.style.opacity = '1';
+            authContainer.style.transform = 'translateY(0)';
+            
+            // Initialize your authentication system
+            initAuthSystem();
+        }, 800);
+    }
+});
+
+// Your Security Configuration (unchanged)
+const SECURITY = {
+    SESSION_TIMEOUT: 3600000,
+    MAX_LOGIN_ATTEMPTS: 10,
+    LOGIN_TIMEOUT: 300000,
+    PASSWORD_MIN_LENGTH: 8,
+    ALLOWED_REDIRECT_PATHS: ['/index.html', '/dashboard.html']
+};
+
+// Initialize Authentication System
+function initAuthSystem() {
+    // [Your existing authentication initialization code]
+}
+
+
+
+

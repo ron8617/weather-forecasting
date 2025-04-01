@@ -5,6 +5,124 @@
     box-sizing: border-box;
 }
 
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.weather-loader {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 30px;
+}
+
+.sun {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #FFD700 0%, #FFA500 70%, #FF8C00 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 50px #FFD700;
+    top: 35px;
+    left: 35px;
+    animation: pulse 2s infinite alternate;
+}
+
+.cloud {
+    position: absolute;
+    width: 80px;
+    height: 30px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 40px;
+    animation: moveCloud 4s infinite ease-in-out;
+}
+
+.cloud:before, .cloud:after {
+    content: '';
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+}
+
+.cloud:before {
+    width: 30px;
+    height: 30px;
+    top: -15px;
+    left: 10px;
+}
+
+.cloud:after {
+    width: 40px;
+    height: 40px;
+    top: -20px;
+    right: 10px;
+}
+
+.progress-text {
+    color: white;
+    font-size: 18px;
+    margin-top: 20px;
+    font-weight: 300;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.progress-bar {
+    width: 200px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffffff, #e0f7fa);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 50px #FFD700; }
+    100% { transform: scale(1.1); box-shadow: 0 0 70px #FFD700; }
+}
+
+@keyframes moveCloud {
+    0%, 100% { transform: translateX(-15px); }
+    50% { transform: translateX(15px); }
+}
+
+/* Animated Background Transition */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 1.5s ease-out;
+}
+
+body.loaded::after {
+    opacity: 1;
+}
+
+
 nav{
     background: #333;
     display: flex;
@@ -149,7 +267,7 @@ nav{
     .weather-details {
         margin-top: 20px;
         padding: 20px;
-        background: rgba(226, 220, 220, 0.2);
+        background:linear-gradient(147deg,#9fa1a1 0%,#a1718959 74%);
         border-radius: 10px;
     }
 
